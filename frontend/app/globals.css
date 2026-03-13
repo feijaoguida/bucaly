@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* 
+  BUCALY DESIGN SYSTEM - Odontologia Afetiva
+  ==========================================
+  Conceito: Acolhimento, confiança e bem-estar
+  Layout limpo com espaços brancos generosos e elementos arredondados
+  
+  Paleta de Cores:
+  - Primary (Amarelo Bucaly): #f4d125
+  - Texto Principal: #1a1a1a (Preto Profundo)
+  - Fundos/Cards: #f8f9fa (Cinza Suave)
+  - Fundo Principal: #ffffff (Branco)
+  
+  Tipografia:
+  - Font Sans: Manrope (Sans-serif)
+  - Títulos: 32px a 64px, Peso 700 (Bold)
+  - Corpo: 16px a 18px, Peso 400, Line-height: 1.6
+  
+  Estilos:
+  - Border Radius: 8px a 12px
+  - Espaçamento: 80px (Desktop), 20px (Mobile)
+*/
+
+:root {
+  /* Cores Base - Guia Bucaly */
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+  
+  /* Componentes Card */
+  --card: #f8f9fa;
+  --card-foreground: #1a1a1a;
+  
+  /* Popover */
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  
+  /* Primary - Amarelo Bucaly #f4d125 */
+  --primary: #f4d125;
+  --primary-foreground: #1a1a1a;
+  
+  /* Secondary */
+  --secondary: #f8f9fa;
+  --secondary-foreground: #1a1a1a;
+  
+  /* Muted */
+  --muted: #f8f9fa;
+  --muted-foreground: #6b7280;
+  
+  /* Accent */
+  --accent: #1a1a1a;
+  --accent-foreground: #ffffff;
+  
+  /* Estados */
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #f4d125;
+  --warning-foreground: #1a1a1a;
+  
+  /* Bordas e Inputs */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: #f4d125;
+  
+  /* Charts */
+  --chart-1: #f4d125;
+  --chart-2: #1a1a1a;
+  --chart-3: #6b7280;
+  --chart-4: #e5e7eb;
+  --chart-5: #f8f9fa;
+  
+  /* Radius - 8px conforme guia */
+  --radius: 0.5rem;
+  
+  /* Sidebar Admin */
+  --sidebar: #1A1A1A;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #F5C518;
+  --sidebar-primary-foreground: #1A1A1A;
+  --sidebar-accent: #2C2C2C;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: #2C2C2C;
+  --sidebar-ring: #F5C518;
+}
+
+.dark {
+  --background: #0f0f0f;
+  --foreground: #f8f9fa;
+  --card: #1a1a1a;
+  --card-foreground: #f8f9fa;
+  --popover: #1a1a1a;
+  --popover-foreground: #f8f9fa;
+  --primary: #f4d125;
+  --primary-foreground: #1a1a1a;
+  --secondary: #2c2c2c;
+  --secondary-foreground: #f8f9fa;
+  --muted: #2c2c2c;
+  --muted-foreground: #9ca3af;
+  --accent: #f4d125;
+  --accent-foreground: #1a1a1a;
+  --destructive: #dc2626;
+  --destructive-foreground: #f8f9fa;
+  --border: #2c2c2c;
+  --input: #2c2c2c;
+  --ring: #f4d125;
+  --chart-1: #f4d125;
+  --chart-2: #f8f9fa;
+  --chart-3: #9ca3af;
+  --chart-4: #2c2c2c;
+  --chart-5: #1a1a1a;
+  --sidebar: #0f0f0f;
+  --sidebar-foreground: #f8f9fa;
+  --sidebar-primary: #f4d125;
+  --sidebar-primary-foreground: #1a1a1a;
+  --sidebar-accent: #2c2c2c;
+  --sidebar-accent-foreground: #f8f9fa;
+  --sidebar-border: #2c2c2c;
+  --sidebar-ring: #f4d125;
+}
+
+@theme inline {
+  /* Tipografia Bucaly - Manrope */
+  --font-sans: 'Manrope', 'Manrope Fallback', system-ui, sans-serif;
+  --font-serif: 'Manrope', 'Manrope Fallback', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback', monospace;
+  
+  /* Cores */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  
+  /* Radius */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  
+  /* Tipografia Base - Manrope conforme guia Bucaly */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight text-balance font-bold;
+  }
+  
+  h1 {
+    @apply text-[32px] md:text-[48px] lg:text-[64px] leading-tight;
+  }
+  
+  h2 {
+    @apply text-[28px] md:text-[36px] lg:text-[48px] leading-tight;
+  }
+  
+  h3 {
+    @apply text-[24px] md:text-[28px] leading-snug font-semibold;
+  }
+  
+  h4 {
+    @apply text-[20px] md:text-[24px] leading-snug font-semibold;
+  }
+  
+  p {
+    @apply text-base md:text-lg leading-[1.6];
+  }
+  
+  /* Focus Visible */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+  
+  /* Selection */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}
+
+/* Utilities Bucaly - Odontologia Afetiva */
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-yellow-400;
+  }
+  
+  /* Container com espaçamento generoso conforme guia: 80px desktop, 20px mobile */
+  .container-bucaly {
+    @apply mx-auto px-5 md:px-10 lg:px-20 max-w-7xl;
+  }
+  
+  /* Seções com muito respiro */
+  .section-padding {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+  
+  .section-padding-lg {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  /* Botão primário - Fundo Amarelo #f4d125, Texto Preto #1a1a1a */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 
+           font-semibold px-6 py-3 rounded-lg transition-all duration-200
+           focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-foreground hover:bg-secondary
+           font-semibold px-6 py-3 rounded-lg transition-all duration-200
+           border border-border;
+  }
+  
+  .input-bucaly {
+    @apply w-full px-4 py-3 rounded-lg border border-input bg-white
+           focus:border-primary focus:ring-1 focus:ring-primary
+           placeholder:text-muted-foreground transition-colors;
+  }
+  
+  /* Card com fundo cinza suave */
+  .card-bucaly {
+    @apply bg-card rounded-xl p-6 md:p-8;
+  }
+}

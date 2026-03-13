@@ -1,0 +1,195 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id @default(uuid())
+  nome        String
+  sobrenome   String
+  email       String    @unique
+  senha       String
+  cpf         String?   @unique
+  telefone    String?
+  role        Role      @default(CLIENTE)
+  avatar      String?
+  ativo       Boolean   @default(true)
+  
+  addresses   Address[]
+  orders      Order[]
+  cart        Cart?
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+enum Role {
+  ADMIN
+  CLIENTE
+}
+
+model Category {
+  id          String    @id @default(uuid())
+  nome        String
+  descricao   String
+  slug        String    @unique
+  icone       String?
+  imagem      String?
+  ativo       Boolean   @default(true)
+  
+  products    Product[]
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id              String    @id @default(uuid())
+  nome            String
+  descricao       String    @db.Text
+  preco           Decimal   @db.Decimal(10, 2)
+  precoOriginal   Decimal?  @db.Decimal(10, 2)
+  categoriaId     String
+  categoria       Category  @relation(fields: [categoriaId], references: [id])
+  marca           String
+  imagens         String[]
+  estoque         Int       @default(0)
+  sku             String    @unique
+  tags            String[]
+  destaque        Boolean   @default(false)
+  novo            Boolean   @default(false)
+  ativo           Boolean   @default(true)
+  avaliacoes      Int       @default(0)
+  mediaAvaliacoes Decimal   @default(0) @db.Decimal(2, 1)
+  
+  cartItems       CartItem[]
+  orderItems      OrderItem[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id])
+  sessionId String?    @unique
+  items     CartItem[]
+  
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model CartItem {
+  id          String   @id @default(uuid())
+  cartId      String
+  cart        Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  produtoId   String
+  produto     Product  @relation(fields: [produtoId], references: [id])
+  quantidade  Int      @default(1)
+  variante    String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([cartId, produtoId, variante])
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nome        String
+  sobrenome   String
+  endereco    String
+  numero      String
+  complemento String?
+  bairro      String
+  cidade      String
+  estado      String   @db.Char(2)
+  cep         String   @db.Char(9)
+  principal   Boolean  @default(false)
+  
+  orders      Order[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id              String        @id @default(uuid())
+  userId          String
+  user            User          @relation(fields: [userId], references: [id])
+  enderecoId      String
+  endereco        Address       @relation(fields: [enderecoId], references: [id])
+  items           OrderItem[]
+  metodoPagamento PaymentMethod
+  metodoEnvio     ShippingMethod
+  subtotal        Decimal       @db.Decimal(10, 2)
+  frete           Decimal       @db.Decimal(10, 2)
+  impostos        Decimal       @db.Decimal(10, 2)
+  desconto        Decimal       @default(0) @db.Decimal(10, 2)
+  total           Decimal       @db.Decimal(10, 2)
+  status          OrderStatus   @default(PENDENTE)
+  
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  produtoId   String
+  produto     Product  @relation(fields: [produtoId], references: [id])
+  quantidade  Int
+  precoUnitario Decimal @db.Decimal(10, 2)
+  variante    String?
+  
+  createdAt   DateTime @default(now())
+}
+
+enum PaymentMethod {
+  CARTAO
+  PIX
+  BOLETO
+  PAYPAL
+}
+
+enum ShippingMethod {
+  PADRAO
+  EXPRESSO
+}
+
+enum OrderStatus {
+  PENDENTE
+  PROCESSANDO
+  ENVIADO
+  ENTREGUE
+  CANCELADO
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  nome      String
+  sobrenome String
+  email     String
+  assunto   String
+  mensagem  String   @db.Text
+  lido      Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+}
+
+model Page {
+  id          String   @id @default(uuid())
+  slug        String   @unique
+  title       String
+  description String?
+  sections    Json
+  updatedAt   DateTime @updatedAt
+}

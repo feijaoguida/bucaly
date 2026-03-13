@@ -1,0 +1,31 @@
+# Desenvolvimento do Backend Bucaly (NestJS + Prisma)
+
+O escopo do motor comercial (Backend API) foi integralmente finalizado durante esta sessão, preparando a base para integração com o frontend em Next.js.
+
+## 1. Módulo de Autenticação e Segurança (Auth)
+Foi implementada uma estratégia robusta de segurança focando em escalabilidade e controle de acessos:
+- **Estratégias do Passport**: Adicionadas estratégias Local (para login com email/senha) e JWT (para endpoints protegidos).
+- **Controlador de Autenticação (`/auth`)**: Endpoints de [login](file:///home/feijao/Projetos/bucaly/backend/src/modules/auth/auth.controller.ts#20-23) gerando token JWT, [register](file:///home/feijao/Projetos/bucaly/backend/src/modules/auth/auth.controller.ts#27-30) (criando novo cliente) e [me](file:///home/feijao/Projetos/bucaly/backend/src/modules/cart/cart.controller.ts#65-69) (retornando o perfil em sessão).
+- **Guards e Roles**: Criação de decoradores como `@Public()`, `@CurrentUser()`, `@Roles(Role.ADMIN)` permitindo proteger endpoints ou expor abertamente as rotas públicas (como vitrine da loja).
+
+## 2. Gerenciamento Estrutural (C-Level)
+O Core Management da loja está operante e segue as restrições de permissões (Admins vs Públicos).
+- **Categorias (`/categories`)**: Leitura pública ativa (find by ID/Slug) e inserção administrativa (Update, Delete, Save).
+- **Produtos (`/products`)**: Endpoints de administração completos (CRUD), adição da funcionalidade de Upload Local com `Multer` para imagens.
+- **Busca e Filtros Técnicos**: Lógica de "findAll" otimizada em [products.service.ts](file:///home/feijao/Projetos/bucaly/backend/src/modules/products/products.service.ts) com agregação por slug de Categoria, `precoMin`, `precoMax`, status `novo`, e ordenação múltipla (`nome`, `preco-asc`, etc.).
+- **Endereços (`/addresses`)**: Gerenciamento individual onde cada usuário visualiza apenas o seu. Lógica de [setPrincipal](file:///home/feijao/Projetos/bucaly/backend/src/modules/addresses/addresses.service.ts#58-73) ativada (apenas 1 endereço ativo por vez).
+
+## 3. Motor de Compras (Carrinho e Checkout)
+A infraestrutura principal para vendas e acompanhamento.
+- **Carrinho Híbrido (`/cart`)**: Funciona com tokens JWT ou chaves de sessão locais (visitantes) utilizando o decorator que construímos [OptionalJwtAuthGuard](file:///home/feijao/Projetos/bucaly/backend/src/common/guards/optional-jwt-auth.guard.ts#4-11). Permite [addItem](file:///home/feijao/Projetos/bucaly/backend/src/modules/cart/cart.service.ts#31-61), `updateQuantity`, e [removeItem](file:///home/feijao/Projetos/bucaly/backend/src/modules/cart/cart.controller.ts#46-50).
+- **Merge de Contas**: Endpoint de `/cart/merge` implementado para ser acionado na tela de Login – transfere os itens da sessão "anônima" para a conta autenticada instanciada no log-in do usuário.
+- **Pedidos (`/orders`)**: O endpoint envia dados de endereço e método de pagamento. Subtrai automaticamente os valores em estoque dos itens contidos no carrinho gerando uma cobrança real com base no frete definido.
+
+## 4. Administrativo, Analítico e Relacionamento
+- **Dashboard (`/dashboard`)**: Implementado [DashboardService](file:///home/feijao/Projetos/bucaly/backend/src/modules/dashboard/dashboard.service.ts#4-53) contendo sumarizações via [Prisma](file:///home/feijao/Projetos/bucaly/backend/src/prisma/prisma.module.ts#4-10) em chamadas `Promise.all` e unificações simples para totalizadores, Vendas recentes, Produtos Populares e Receita em dashboard do Admin.
+- **Contato (`/contact`)**: Recepção pública de contatos da landing page sendo marcadas e lidas pelo Dashboard admin.
+
+## 5. Próximos Passos
+O arquivo Axios interceptou chamadas para a API via token pré-configurado dentro de [frontend/lib/api.ts](file:///home/feijao/Projetos/bucaly/frontend/lib/api.ts).
+A partir daqui, a aplicação frontend se conecta na API `http://localhost:3001` consumindo os endpoints já declarados acima.
+Efetue a instalação no App Frontend de bibliotecas REST (`npm install axios`).

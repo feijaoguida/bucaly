@@ -14,6 +14,5 @@ export class UpdatePageDto {
 
   @ApiProperty({ description: 'Estrutura JSON das seções configuráveis' })
   @IsOptional()
-  @IsObject()
-  sections?: Record<string, any>;
+  sections?: any;
 }

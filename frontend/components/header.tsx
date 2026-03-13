@@ -17,17 +17,23 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-const navLinks = [
+const defaultNavLinks = [
   { href: '/', label: 'Início' },
   { href: '/produtos', label: 'Produtos' },
   { href: '/sobre', label: 'Sobre Nós' },
   { href: '/contato', label: 'Contato' },
 ]
 
-export function Header() {
+interface HeaderProps {
+  data?: any // Dados vindos do CMS
+}
+
+export function Header({ data }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [cartCount] = useState(3) // Mock cart count
   const pathname = usePathname()
+
+  const navLinks = data?.menuItems ? data.menuItems.map((item: any) => ({ href: item.link, label: item.label })) : defaultNavLinks
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -38,7 +44,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
+            {navLinks.map((link: { href: string; label: string }) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -130,7 +136,7 @@ export function Header() {
                   </SheetTitle>
                 </SheetHeader>
                 <nav className="flex flex-col gap-4 mt-8">
-                  {navLinks.map((link) => (
+                  {navLinks.map((link: { href: string; label: string }) => (
                     <Link
                       key={link.href}
                       href={link.href}

@@ -37,7 +37,7 @@ export default function AdminPagesList() {
             </CardHeader>
             <CardContent className="mt-auto pt-4">
               <Button asChild className="w-full" variant="outline">
-                <Link href={`/admin/paginas/${page.slug}`}>
+                <Link href={`/admin/builder/${page.slug}`}>
                   Personalizar "{page.title}"
                 </Link>
               </Button>

@@ -51,6 +51,15 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const isBuilderRoute = pathname?.startsWith('/admin/builder')
+
+  if (isBuilderRoute) {
+    return (
+      <AdminGuard>
+        {children}
+      </AdminGuard>
+    )
+  }
 
   return (
     <AdminGuard>

@@ -13,72 +13,132 @@ async function main() {
   // Limpando páginas legadas para evitar colisão do json para struct array
   await prisma.page.deleteMany({});
 
-  // Pages (CMS)
+  // Pages (CMS) - Formato Elementor (Sections > Columns > Widgets)
   const homeSections = [
     {
       id: crypto.randomUUID(),
-      type: 'banner',
-      name: 'Banner Principal',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Sorriso <span class="text-primary">Mais Saudável</span> e Brilhante',
-        subtitle: 'Odontologia Afetiva',
-        content: 'Experimente produtos ortodônticos e odontológicos profissionais selecionados, projetados para seu máximo conforto e sucesso clínico.',
-        image: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800',
-        buttonText: 'Comprar Agora',
-        buttonLink: '/produtos',
-        secondaryButtonText: 'Ver Guia',
-        secondaryButtonLink: '/sobre'
-      }
+      settings: { padding: { top: '0', bottom: '0' }, fullWidth: true },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+            {
+              id: crypto.randomUUID(),
+              type: 'banner',
+              data: {
+                title: 'Sorriso <span class="text-primary">Mais Saudável</span> e Brilhante',
+                subtitle: 'Odontologia Afetiva',
+                content: 'Experimente produtos ortodônticos e odontológicos profissionais selecionados, projetados para seu máximo conforto e sucesso clínico.',
+                image: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800',
+                buttonText: 'Comprar Agora',
+                buttonLink: '/produtos',
+                secondaryButtonText: 'Ver Guia',
+                secondaryButtonLink: '/sobre'
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       id: crypto.randomUUID(),
-      type: 'categories',
-      name: 'Compre por Categoria',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Compre por Categoria',
-        subtitle: 'Encontre exatamente o que sua rotina dental precisa',
-        limit: 4
-      }
+      settings: { background: { type: 'color', value: '#f8f9fa' }, padding: { top: '5rem', bottom: '5rem' } },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+            {
+              id: crypto.randomUUID(),
+              type: 'categories',
+              data: {
+                title: 'Compre por Categoria',
+                subtitle: 'Encontre exatamente o que sua rotina dental precisa',
+                limit: 4
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       id: crypto.randomUUID(),
-      type: 'featuredProducts',
-      name: 'Mais Vendidos',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Mais Vendidos',
-        subtitle: 'Os produtos mais amados pela nossa comunidade',
-        limit: 3
-      }
+      settings: { padding: { top: '6rem', bottom: '6rem' } },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+            {
+              id: crypto.randomUUID(),
+              type: 'featuredProducts',
+              data: {
+                title: 'Mais Vendidos',
+                subtitle: 'Os produtos mais amados pela nossa comunidade',
+                limit: 3
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       id: crypto.randomUUID(),
-      type: 'benefits',
-      name: 'Benefícios',
+      type: 'container',
       enabled: true,
-      data: {
-        items: [
-          { title: 'Frete Grátis', subtitle: 'Em pedidos acima de R$ 200. Entrega rápida e segura para todo Brasil.', icon: 'Truck' },
-          { title: 'Pagamento Seguro', subtitle: 'Processamento de pagamento seguro com criptografia SSL de 256 bits.', icon: 'Shield' },
-          { title: '30 Dias de Devolução', subtitle: 'Garantia de satisfação. Devolução fácil em até 30 dias.', icon: 'Clock' },
-        ]
-      }
+      settings: { padding: { top: '4rem', bottom: '4rem' } },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+            {
+              id: crypto.randomUUID(),
+              type: 'benefits',
+              data: {
+                items: [
+                  { title: 'Frete Grátis', subtitle: 'Em pedidos acima de R$ 200. Entrega rápida e segura para todo Brasil.', icon: 'Truck' },
+                  { title: 'Pagamento Seguro', subtitle: 'Processamento de pagamento seguro com criptografia SSL de 256 bits.', icon: 'Shield' },
+                  { title: '30 Dias de Devolução', subtitle: 'Garantia de satisfação. Devolução fácil em até 30 dias.', icon: 'Clock' },
+                ]
+              }
+            }
+          ]
+        }
+      ]
     },
     {
       id: crypto.randomUUID(),
-      type: 'cta',
-      name: 'Call to Action Base',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Pronto para vivenciar uma nova experiência em odontologia?',
-        content: 'Nossa equipe está preparada para cuidar de você com todo o carinho e profissionalismo que seu sorriso merece.',
-        primaryButtonText: 'Agendar Consulta',
-        primaryButtonLink: '/contato',
-        secondaryButtonText: 'Falar no WhatsApp',
-        secondaryButtonLink: 'https://wa.me/5511999999999'
-      }
+      settings: { fullWidth: true, padding: { top: '0', bottom: '0' } },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+            {
+              id: crypto.randomUUID(),
+              type: 'cta',
+              data: {
+                title: 'Pronto para vivenciar uma nova experiência em odontologia?',
+                content: 'Nossa equipe está preparada para cuidar de você com todo o carinho e profissionalismo que seu sorriso merece.',
+                primaryButtonText: 'Agendar Consulta',
+                primaryButtonLink: '/contato',
+                secondaryButtonText: 'Falar no WhatsApp',
+                secondaryButtonLink: 'https://wa.me/5511999999999'
+              }
+            }
+          ]
+        }
+      ]
     }
   ];
 
@@ -94,25 +154,49 @@ async function main() {
   const aboutSections = [
     {
       id: crypto.randomUUID(),
-      type: 'banner',
-      name: 'Banner Sobre Nós',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Nossa História',
-        subtitle: 'Conheça a Bucaly',
-        content: 'A Bucaly nasceu com a missão de fornecer equipamentos e materiais odontológicos de máxima qualidade com preços justos.',
-        image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800'
-      }
+      settings: { padding: { top: '0', bottom: '0' }, fullWidth: true },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+             {
+               id: crypto.randomUUID(),
+               type: 'banner',
+               data: {
+                 title: 'Nossa História',
+                 subtitle: 'Conheça a Bucaly',
+                 content: 'A Bucaly nasceu com a missão de fornecer equipamentos e materiais odontológicos de máxima qualidade com preços justos.',
+                 image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=800'
+               }
+             }
+          ]
+        }
+      ]
     },
     {
       id: crypto.randomUUID(),
-      type: 'text_block',
-      name: 'Nossa Missão',
+      type: 'container',
       enabled: true,
-      data: {
-        title: 'Acreditamos em Odontologia Acessível',
-        content: 'Buscamos todos os dias entregar os melhores produtos das melhores marcas aos profissionais brasileiros.'
-      }
+      settings: { padding: { top: '5rem', bottom: '5rem' } },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+             {
+               id: crypto.randomUUID(),
+               type: 'text_block',
+               data: {
+                 title: 'Acreditamos em Odontologia Acessível',
+                 content: 'Buscamos todos os dias entregar os melhores produtos das melhores marcas aos profissionais brasileiros.'
+               }
+             }
+          ]
+        }
+      ]
     }
   ];
 
@@ -121,6 +205,80 @@ async function main() {
       slug: 'sobre-nos',
       title: 'Sobre Nós',
       sections: aboutSections,
+    }
+  });
+
+  const headerSections = [
+    {
+      id: crypto.randomUUID(),
+      type: 'container',
+      enabled: true,
+      settings: { padding: { top: '0', bottom: '0' }, fullWidth: true },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+             {
+               id: crypto.randomUUID(),
+               type: 'header',
+               data: {
+                 logoUrl: '/logo.svg',
+                 menuItems: [
+                   { label: 'Início', link: '/' },
+                   { label: 'Produtos', link: '/produtos' },
+                   { label: 'Sobre', link: '/sobre' },
+                   { label: 'Contato', link: '/contato' }
+                 ]
+               }
+             }
+          ]
+        }
+      ]
+    }
+  ];
+
+  await prisma.page.create({
+    data: {
+      slug: 'global-header',
+      title: 'Cabeçalho do Site',
+      sections: headerSections,
+    }
+  });
+
+  const footerSections = [
+    {
+      id: crypto.randomUUID(),
+      type: 'container',
+      enabled: true,
+      settings: { padding: { top: '0', bottom: '0' }, fullWidth: true },
+      columns: [
+        {
+          id: crypto.randomUUID(),
+          size: '1/1',
+          widgets: [
+             {
+               id: crypto.randomUUID(),
+               type: 'footer',
+               data: {
+                 copyright: '© 2026 Bucaly. Todos os direitos reservados.',
+                 links: [
+                   { label: 'Política de Privacidade', link: '/privacidade' },
+                   { label: 'Termos de Serviço', link: '/termos' }
+                 ]
+               }
+             }
+          ]
+        }
+      ]
+    }
+  ];
+
+  await prisma.page.create({
+    data: {
+      slug: 'global-footer',
+      title: 'Rodapé do Site',
+      sections: footerSections,
     }
   });
 

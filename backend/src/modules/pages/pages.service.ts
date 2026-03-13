@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { UpdatePageDto } from './dto/update-page.dto';
+import { CreatePageDto } from './dto/create-page.dto';
 
 @Injectable()
 export class PagesService {
@@ -35,6 +36,25 @@ export class PagesService {
     }
 
     return page;
+  }
+
+  async create(createPageDto: CreatePageDto) {
+    let rawSlug = createPageDto.slug || createPageDto.title;
+    // Normalizar slug: minúsculo, sem acentos, espaços viram hífen
+    const slug = rawSlug.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    
+    const exists = await this.prisma.page.findUnique({ where: { slug } });
+    if (exists) {
+      throw new BadRequestException('Já existe uma página com este URL (slug).');
+    }
+
+    return this.prisma.page.create({
+      data: {
+        slug,
+        title: createPageDto.title,
+        sections: [] // Começa como um construtor vazio "Container / Linhas" - Sem dados mockados
+      }
+    });
   }
 
   async findBySlug(slug: string) {

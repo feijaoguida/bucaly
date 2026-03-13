@@ -4,7 +4,7 @@ import { Logo } from '@/components/logo'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-const footerLinks = {
+const defaultFooterLinks = {
   loja: {
     title: 'Loja',
     links: [
@@ -34,11 +34,18 @@ const footerLinks = {
   },
 }
 
-export function Footer() {
+interface FooterProps {
+  data?: any
+}
+
+export function Footer({ data }: FooterProps) {
+  const linksBottomData = data?.links || []
+  const copyrightText = data?.copyright || '© 2026 Bucaly. Todos os direitos reservados.'
+
   return (
-    <footer className="bg-accent text-accent-foreground mt-auto">
+    <footer className="bg-accent text-accent-foreground mt-auto w-full">
       <div className="container-bucaly section-padding">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-12 w-full">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Logo variant="white" className="mb-4" />
@@ -86,7 +93,7 @@ export function Footer() {
           </div>
 
           {/* Links Columns */}
-          {Object.values(footerLinks).map((section) => (
+          {Object.values(defaultFooterLinks).map((section) => (
             <div key={section.title}>
               <h3 className="font-semibold text-sm uppercase tracking-wider mb-4">
                 {section.title}
@@ -129,18 +136,26 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-accent-foreground/10 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-accent-foreground/60">
-            <p>© 2024 Bucaly Dental Supply. Todos os direitos reservados.</p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-accent-foreground/60 w-full">
+            <p>{copyrightText}</p>
             <div className="flex gap-6">
-              <Link href="/privacidade" className="hover:text-accent-foreground transition-colors">
-                Política de Privacidade
-              </Link>
-              <Link href="/termos" className="hover:text-accent-foreground transition-colors">
-                Termos de Serviço
-              </Link>
-              <Link href="/cookies" className="hover:text-accent-foreground transition-colors">
-                Configurações de Cookies
-              </Link>
+              {linksBottomData.length > 0 ? linksBottomData.map((lbl: any, lIdx: number) => (
+                 <Link key={lIdx} href={lbl.link} className="hover:text-accent-foreground transition-colors">
+                   {lbl.label}
+                 </Link>
+              )) : (
+                <>
+                  <Link href="/privacidade" className="hover:text-accent-foreground transition-colors">
+                    Política de Privacidade
+                  </Link>
+                  <Link href="/termos" className="hover:text-accent-foreground transition-colors">
+                    Termos de Serviço
+                  </Link>
+                  <Link href="/cookies" className="hover:text-accent-foreground transition-colors">
+                    Configurações de Cookies
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
-import { Controller, Get, Body, Patch, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, UseGuards } from '@nestjs/common';
 import { PagesService } from './pages.service';
 import { UpdatePageDto } from './dto/update-page.dto';
+import { CreatePageDto } from './dto/create-page.dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -18,6 +19,16 @@ export class PagesController {
   @ApiOperation({ summary: 'Obter dados de uma página dinâmica pelo Slug (Público)' })
   async findOne(@Param('slug') slug: string) {
     const data = await this.pagesService.findBySlug(slug);
+    return { success: true, data };
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @Post()
+  @ApiOperation({ summary: 'Criar uma nova página (Admin)' })
+  async create(@Body() createPageDto: CreatePageDto) {
+    const data = await this.pagesService.create(createPageDto);
     return { success: true, data };
   }
 

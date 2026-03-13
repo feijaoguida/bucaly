@@ -17,9 +17,19 @@ export class PagesService {
         data: {
           slug,
           title,
-          sections: {
-            hero: { enabled: true, title: `Bem-vindo à ${title}`, subtitle: 'Gerencie de forma dinâmica' }
-          }
+          sections: [
+            {
+              id: crypto.randomUUID(),
+              type: 'banner',
+              name: 'Banner Principal',
+              enabled: true,
+              data: {
+                title: `Bem-vindo à ${title}`,
+                subtitle: 'Gerencie de forma dinâmica',
+                image: 'https://images.unsplash.com/photo-1606811971618-4486d14f3f99?w=800'
+              }
+            }
+          ]
         }
       });
     }
